@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sxt.ssm.dao.StudentDao" >
+  <resultMap id="BaseResultMap" type="com.sxt.ssm.entity.Student" >
+    <id column="STU_ID" property="stuId" jdbcType="DECIMAL" />
+    <result column="STU_NAME" property="stuName" jdbcType="VARCHAR" />
+    <result column="STU_AGE" property="stuAge" jdbcType="DECIMAL" />
+    <result column="STU_BIRTH" property="stuBirth" jdbcType="DATE" />
+    <result column="PHOTO" property="photo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    STU_ID, STU_NAME, STU_AGE, STU_BIRTH
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_STUDENT
+    where STU_ID = #{stuId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short" >
+    delete from T_STUDENT
+    where STU_ID = #{stuId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.sxt.ssm.entity.Student" >
+    insert into T_STUDENT (STU_ID, STU_NAME, STU_AGE, 
+      STU_BIRTH)
+    values (#{stuId,jdbcType=DECIMAL}, #{stuName,jdbcType=VARCHAR}, #{stuAge,jdbcType=DECIMAL}, 
+      #{stuBirth,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sxt.ssm.entity.Student" >
+    insert into T_STUDENT
+    <trim prefix="(STU_ID," suffix=")" suffixOverrides="," >
+      <if test="stuName != null" >
+        STU_NAME,
+      </if>
+      <if test="stuAge != null" >
+        STU_AGE,
+      </if>
+      <if test="stuBirth != null" >
+        STU_BIRTH,
+      </if>
+       <if test="photo != null" >
+        PHOTO,
+      </if>
+    </trim>
+    <trim prefix="values (seq_id.nextval," suffix=")" suffixOverrides="," >
+      <if test="stuName != null" >
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuAge != null" >
+        #{stuAge,jdbcType=DECIMAL},
+      </if>
+      <if test="stuBirth != null" >
+        #{stuBirth,jdbcType=DATE},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sxt.ssm.entity.Student" >
+    update T_STUDENT
+    <set >
+      <if test="stuName != null" >
+        STU_NAME = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuAge != null" >
+        STU_AGE = #{stuAge,jdbcType=DECIMAL},
+      </if>
+      <if test="stuBirth != null" >
+        STU_BIRTH = #{stuBirth,jdbcType=DATE},
+      </if>
+    </set>
+    where STU_ID = #{stuId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sxt.ssm.entity.Student" >
+    update T_STUDENT
+    set STU_NAME = #{stuName,jdbcType=VARCHAR},
+      STU_AGE = #{stuAge,jdbcType=DECIMAL},
+      STU_BIRTH = #{stuBirth,jdbcType=DATE}
+    where STU_ID = #{stuId,jdbcType=DECIMAL}
+  </update>
+</mapper>
